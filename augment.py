@@ -9,26 +9,29 @@
 
 # ex. python3 augment.py brightness -10 10 noise -25 25 rotation -20 20
 
+# Game Plan:
+# - Group annotations by image
+# - Grab matching image
+# - Apply augmentation to iamge and annotation (if rotation)
+# - Copy and save to ouput
+
 import sys
 import glob
-import cv2 as cv
+import cv2 as cv 
 import numpy
 import random
+from pathlib import Path
 from enum import Enum
 
 augmentations = 'rotate noise brightness saturation'
 
+currentFolder = ''
+inputFolderPath = ''
+outputFolderPath = ''
+
 def main():
     argc = len(sys.argv)
-    if argc < 4 or (argc - 1) % 3 != 0:
-        printArgs()       
-
-    # Augmentation Execution
-    for i in range(1, argc):
-        augName = sys.argv[i].lower()       # name of augmentation
-        lthresh = sys.argv[i+1].lower()     # lower threshold
-        uthresh = sys.argv[i+2].lower()     # upper threshold
-        augment(augName, lthresh, uthresh)
+    assert argc == 4, printArgs()
 
 def augment(aug, lowerThresh, upperThresh) -> bool:
     return True
